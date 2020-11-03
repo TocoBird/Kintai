@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CSVLink } from 'react-csv';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
+
 dayjs.locale('ja');
 
 interface Props {}
@@ -25,7 +26,7 @@ export const Detail: React.FC<Props> = (props) => {
   const csv = () => {
     const start = dayjs(`${year}-${month}-01`);
     const nextMonth = start.add(1, 'month');
-    let dates: dayjs.Dayjs[] = [];
+    const dates: dayjs.Dayjs[] = [];
     for (let d = start; d.isBefore(nextMonth); d = d.add(1, 'day')) {
       dates.push(d);
     }
@@ -77,11 +78,14 @@ export const Detail: React.FC<Props> = (props) => {
 
           {csv().map((record) => (
             <tr key={record[1]}>
-              {record.map((d, i) => (
-                <td key={`${d}_${i}`} style={{ padding: '5px 10px' }}>
-                  {d}
-                </td>
-              ))}
+              {record.map((d, i) => {
+                const k = `${d}_${i}`;
+                return (
+                  <td key={k} style={{ padding: '5px 10px' }}>
+                    {d}
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
